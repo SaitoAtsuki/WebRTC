@@ -69,6 +69,16 @@
             mediaConnection.answer(localStream);
             setEventListener(mediaConnection);
         });
+
+        //エラー
+        peer.on('error', err => {
+            alert(err.message);
+        });
+
+        //切断
+        peer.on('close', () => {
+            alert('通信が切断しました。');
+        });
     </script>
 
 </body>
