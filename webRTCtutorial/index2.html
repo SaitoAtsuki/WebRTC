@@ -34,6 +34,8 @@
 
         //動画の設定（audio, FPSなど）
         const mediaStreamConstraints = {
+            frameRate: { max: 3 },
+            //latency: { max: 1000, min: 500 },
             video: true
         };
         // カメラ映像取得
