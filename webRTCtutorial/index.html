@@ -6,16 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.webrtc.ecl.ntt.com/skyway-latest.js"></script>
     <title>SkyWayチュートリアル</title>
+    <style>
+        .section {
+            padding: 0;
+            margin: 0;
+            float: left;
+            width: 40%;
+        }
+    </style>
 </head>
 
 <body>
 
     <body>
-        <video id="my-video" width="400px" autoplay muted playsinline></video>
-        <p id="my-id"></p>
-        <textarea id="their-id"></textarea>
-        <button id="make-call">発信</button>
-        <video id="their-video" width="400px" autoplay muted playsinline></video>
+        <div class='section'>
+            <video id="my-video" width="80%" autoplay muted playsinline></video>
+            <p id="my-id"></p>
+            <button id="video-muto">映像をミュートする</button>
+            <button id="video-unmuto">映像のミュートを解除</button>
+        </div>
+        <div class='section'>
+            <video id="their-video" width="80%" autoplay muted playsinline></video><br>
+            <input id="their-id"></textarea>
+            <button id="make-call">発信</button>
+        </div>
     </body>
 
     <script>
@@ -32,8 +46,10 @@
             document.getElementById('my-id').textContent = peer.id;
         });
 
+        const mediaStreamConstraints = { video: true, audio: true };
+
         // カメラ映像取得
-        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        navigator.mediaDevices.getUserMedia(mediaStreamConstraints)
             .then(stream => {
                 // 成功時にvideo要素にカメラ映像をセットし、再生
                 const videoElm = document.getElementById('my-video')
@@ -52,6 +68,15 @@
             const theirID = document.getElementById('their-id').value;
             const mediaConnection = peer.call(theirID, localStream);
             setEventListener(mediaConnection);
+        };
+
+        document.getElementById('video-muto').onclick = () => {
+            var videoTrack = localStream.getVideoTracks()[0];
+            videoTrack.enabled = false;
+        };
+        document.getElementById('video-unmuto').onclick = () => {
+            var videoTrack = localStream.getVideoTracks()[0];
+            videoTrack.enabled = true;
         };
 
         // イベントリスナを設置する関数

@@ -34,9 +34,9 @@
 
         //動画の設定（audio, FPSなど）
         const mediaStreamConstraints = {
-            frameRate: { max: 3 },
-            //latency: { max: 1000, min: 500 },
-            video: true
+            frameRate: { ideal: 0.25 },
+            video: true,
+            audio: false
         };
         // カメラ映像取得
         navigator.mediaDevices.getDisplayMedia(mediaStreamConstraints)
