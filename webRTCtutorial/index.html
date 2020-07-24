@@ -123,6 +123,8 @@
                     return;
                 });
             document.getElementById('media-button').innerHTML = '<button id="audio-mute" onclick="mediaStop()">カメラを止める</button>';
+            document.getElementById('video-button').innerHTML = '<button id="video-mute" onclick="videoMute()">ビデオをミュートする</button>';
+            document.getElementById('audio-button').innerHTML = '<button id="audio-mute" onclick="audioMute()">オーディオをミュートする</button>';
         }
 
         // イベントリスナを設置する関数
