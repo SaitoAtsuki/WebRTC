@@ -36,11 +36,13 @@
             <video id="their-video" width="80%" autoplay muted playsinline></video><br>
             <input id="their-id"></textarea>
             <button id="make-call">発信</button>
+            <button id="stop-call">切断</button>
         </div>
     </body>
 
     <script>
         let localStream;
+        let mediaConnection;
 
         //Peer作成
         const peer = new Peer({
@@ -73,8 +75,11 @@
         // 発信処理
         document.getElementById('make-call').onclick = () => {
             const theirID = document.getElementById('their-id').value;
-            const mediaConnection = peer.call(theirID, localStream);
+            mediaConnection = peer.call(theirID, localStream);
             setEventListener(mediaConnection);
+        };
+        document.getElementById('stop-call').onclick = () => {
+            mediaConnection.close();
         };
 
         //ミュート処理
@@ -138,7 +143,8 @@
         }
 
         //着信処理
-        peer.on('call', mediaConnection => {
+        peer.on('call', call => {
+            mediaConnection = call;
             mediaConnection.answer(localStream);
             setEventListener(mediaConnection);
         });
