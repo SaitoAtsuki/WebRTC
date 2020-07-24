@@ -34,7 +34,7 @@
         </div>
         <div class='section'>
             <video id="their-video" width="80%" autoplay muted playsinline></video><br>
-            <input id="their-id"></textarea>
+            <input id="their-id"></input>
             <button id="make-call">発信</button>
             <button id="stop-call">切断</button>
         </div>
@@ -53,6 +53,9 @@
         //PeerID取得
         peer.on('open', () => {
             document.getElementById('my-id').textContent = peer.id;
+            peer.listAllPeers(peers => {
+                console.log(peers);
+            });
         });
 
         const mediaStreamConstraints = { video: true, audio: true };
