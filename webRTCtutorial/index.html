@@ -29,7 +29,7 @@
                 <button id="audio-mute" onclick="audioMute()">オーディオをミュートする</button>
             </div>
             <div id='media-button'>
-                <button id="audio-mute" onclick="mediaStop()">カメラを止める</button>
+                <button id="media-mute" onclick="mediaStop()">カメラを止める</button>
             </div>
         </div>
         <div class='section'>
@@ -41,6 +41,7 @@
     </body>
 
     <script>
+        //localStream, mediaConnection, peer, mediaStreamConstraintsはグローバル変数にする必要がある
         let localStream;
         let mediaConnection;
 
@@ -107,6 +108,7 @@
             document.getElementById('audio-button').innerHTML = '<button id="audio-mute" onclick="audioMute()">オーディオをミュートする</button>';
         };
 
+        //カメラを止める・再開する
         function mediaStop() {
             localStream.getVideoTracks().forEach((track) => {
                 track.stop();
@@ -114,7 +116,7 @@
             localStream.getAudioTracks().forEach((track) => {
                 track.stop();
             });
-            document.getElementById('media-button').innerHTML = '<button id="audio-mute" onclick="mediaRestart()">カメラを再開する</button>';
+            document.getElementById('media-button').innerHTML = '<button id="media-mute" onclick="mediaRestart()">カメラを再開する</button>';
         }
         function mediaRestart() {
             navigator.mediaDevices.getUserMedia(mediaStreamConstraints)
@@ -132,7 +134,7 @@
                     console.error('mediaDevice.getUserMedia() error:', error);
                     return;
                 });
-            document.getElementById('media-button').innerHTML = '<button id="audio-mute" onclick="mediaStop()">カメラを止める</button>';
+            document.getElementById('media-button').innerHTML = '<button id="media-mute" onclick="mediaStop()">カメラを止める</button>';
             document.getElementById('video-button').innerHTML = '<button id="video-mute" onclick="videoMute()">ビデオをミュートする</button>';
             document.getElementById('audio-button').innerHTML = '<button id="audio-mute" onclick="audioMute()">オーディオをミュートする</button>';
         }
