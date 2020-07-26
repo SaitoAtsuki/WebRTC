@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.webrtc.ecl.ntt.com/skyway-latest.js"></script>
+    <title>SkyWayチュートリアル Peer指定ver login</title>
+</head>
+
+<body>
+    <input id="myPeer"><button onclick="login()">login</button>
+
+    <script>
+        function login() {
+            var myPeer = document.getElementById('myPeer').value;
+            window.location = 'room.html?myPeer=' + myPeer;
+        }
+    </script>
+
+</body>
+
+</html>

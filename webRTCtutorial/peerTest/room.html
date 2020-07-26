@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.webrtc.ecl.ntt.com/skyway-latest.js"></script>
+    <script src="wertc.js"></script>
+    <title>SkyWayチュートリアル</title>
+    <style>
+        .section {
+            padding: 0;
+            margin: 0;
+            float: left;
+            width: 40%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class='section'>
+        <video id="my-video" width="80%" autoplay muted playsinline></video>
+        <p id="my-id"></p>
+        <div id="video-button">
+            <button id="video-mute" onclick="videoMute()">ビデオをミュートする</button>
+        </div>
+        <div id="audio-button">
+            <button id="audio-mute" onclick="audioMute()">オーディオをミュートする</button>
+        </div>
+        <div id='media-button'>
+            <button id="media-mute" onclick="mediaStop()">カメラを止める</button>
+        </div>
+    </div>
+    <div class='section'>
+        <video id="their-video" width="80%" autoplay muted playsinline></video><br>
+        <input id="their-id"></input>
+        <button id="make-call">発信</button>
+        <button id="stop-call">切断</button>
+    </div>
+
+    <script>
+        //localStream, mediaConnection, peer, mediaStreamConstraintsはグローバル変数にする必要がある
+        let localStream;
+        let mediaConnection;
+
+        let myPeer = webrtc.getParam('myPeer');
+        //Peer作成
+        const peer = new Peer(myPeer, {
+            key: '7847c485-eee9-4d00-8851-02a786937532',
+        });
+
+        //PeerID取得
+        peer.on('open', () => {
+            document.getElementById('my-id').textContent = peer.id;
+            peer.listAllPeers(peers => {
+                console.log(peers);
+            });
+        });
+
+        const mediaStreamConstraints = { video: true, audio: true };
+
+        // カメラ映像取得
+        navigator.mediaDevices.getUserMedia(mediaStreamConstraints)
+            .then(stream => {
+                // 成功時にvideo要素にカメラ映像をセットし、再生
+                const videoElm = document.getElementById('my-video')
+                videoElm.srcObject = stream;
+                videoElm.play();
+                // 着信時に相手にカメラ映像を返せるように、グローバル変数に保存しておく
+                localStream = stream;
+            }).catch(error => {
+                // 失敗時にはエラーログを出力
+                console.error('mediaDevice.getUserMedia() error:', error);
+                return;
+            });
+
+        // 発信処理
+        document.getElementById('make-call').onclick = () => {
+            const theirID = document.getElementById('their-id').value;
+            mediaConnection = peer.call(theirID, localStream);
+            setEventListener(mediaConnection);
+        };
+        document.getElementById('stop-call').onclick = () => {
+            mediaConnection.close();
+        };
+
+        //ミュート処理
+        function videoMute() {
+            var videoTrack = localStream.getVideoTracks()[0];
+            videoTrack.enabled = false;
+            document.getElementById('video-button').innerHTML = '<button id="video-unmute" onclick="videoUnmute()">ビデオのミュート解除</button>';
+        };
+        function videoUnmute() {
+            var videoTrack = localStream.getVideoTracks()[0];
+            videoTrack.enabled = true;
+            document.getElementById('video-button').innerHTML = '<button id="video-mute" onclick="videoMute()">ビデオをミュートする</button>';
+        };
+        function audioMute() {
+            var audioTrack = localStream.getAudioTracks()[0];
+            audioTrack.enabled = false;
+            document.getElementById('audio-button').innerHTML = '<button id="audio-unmute" onclick="audioUnmute()">オーディオのミュート解除</button>';
+        };
+        function audioUnmute() {
+            var audioTrack = localStream.getAudioTracks()[0];
+            audioTrack.enabled = true;
+            document.getElementById('audio-button').innerHTML = '<button id="audio-mute" onclick="audioMute()">オーディオをミュートする</button>';
+        };
+
+        //カメラを止める・再開する
+        function mediaStop() {
+            localStream.getVideoTracks().forEach((track) => {
+                track.stop();
+            });
+            localStream.getAudioTracks().forEach((track) => {
+                track.stop();
+            });
+            document.getElementById('media-button').innerHTML = '<button id="media-mute" onclick="mediaRestart()">カメラを再開する</button>';
+        }
+        function mediaRestart() {
+            navigator.mediaDevices.getUserMedia(mediaStreamConstraints)
+                .then(stream => {
+                    // 成功時にvideo要素にカメラ映像をセットし、再生
+                    const videoElm = document.getElementById('my-video')
+                    videoElm.srcObject = stream;
+                    videoElm.muted = true;
+                    videoElm.playsInline = true;
+                    videoElm.play();
+                    // 着信時に相手にカメラ映像を返せるように、グローバル変数に保存しておく
+                    localStream = stream;
+                }).catch(error => {
+                    // 失敗時にはエラーログを出力
+                    console.error('mediaDevice.getUserMedia() error:', error);
+                    return;
+                });
+            document.getElementById('media-button').innerHTML = '<button id="media-mute" onclick="mediaStop()">カメラを止める</button>';
+            document.getElementById('video-button').innerHTML = '<button id="video-mute" onclick="videoMute()">ビデオをミュートする</button>';
+            document.getElementById('audio-button').innerHTML = '<button id="audio-mute" onclick="audioMute()">オーディオをミュートする</button>';
+        }
+
+        // イベントリスナを設置する関数
+        const setEventListener = mediaConnection => {
+            mediaConnection.on('stream', stream => {
+                // video要素にカメラ映像をセットして再生
+                const videoElm = document.getElementById('their-video')
+                videoElm.srcObject = stream;
+                //音声を出力
+                videoElm.muted = false;
+                videoElm.play();
+            });
+        }
+
+        //着信処理
+        peer.on('call', call => {
+            mediaConnection = call;
+            mediaConnection.answer(localStream);
+            setEventListener(mediaConnection);
+        });
+
+        //エラー
+        peer.on('error', err => {
+            alert(err.message);
+        });
+
+        //切断
+        peer.on('close', () => {
+            alert('通信が切断しました。');
+        });
+    </script>
+
+</body>
+
+</html>
