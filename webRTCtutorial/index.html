@@ -18,27 +18,25 @@
 
 <body>
 
-    <body>
-        <div class='section'>
-            <video id="my-video" width="80%" autoplay muted playsinline></video>
-            <p id="my-id"></p>
-            <div id="video-button">
-                <button id="video-mute" onclick="videoMute()">ビデオをミュートする</button>
-            </div>
-            <div id="audio-button">
-                <button id="audio-mute" onclick="audioMute()">オーディオをミュートする</button>
-            </div>
-            <div id='media-button'>
-                <button id="media-mute" onclick="mediaStop()">カメラを止める</button>
-            </div>
+    <div class='section'>
+        <video id="my-video" width="80%" autoplay muted playsinline></video>
+        <p id="my-id"></p>
+        <div id="video-button">
+            <button id="video-mute" onclick="videoMute()">ビデオをミュートする</button>
         </div>
-        <div class='section'>
-            <video id="their-video" width="80%" autoplay muted playsinline></video><br>
-            <input id="their-id"></input>
-            <button id="make-call">発信</button>
-            <button id="stop-call">切断</button>
+        <div id="audio-button">
+            <button id="audio-mute" onclick="audioMute()">オーディオをミュートする</button>
         </div>
-    </body>
+        <div id='media-button'>
+            <button id="media-mute" onclick="mediaStop()">カメラを止める</button>
+        </div>
+    </div>
+    <div class='section'>
+        <video id="their-video" width="80%" autoplay muted playsinline></video><br>
+        <input id="their-id"></input>
+        <button id="make-call">発信</button>
+        <button id="stop-call">切断</button>
+    </div>
 
     <script>
         //localStream, mediaConnection, peer, mediaStreamConstraintsはグローバル変数にする必要がある
