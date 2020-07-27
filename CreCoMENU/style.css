@@ -1,0 +1,26 @@
+.videos-container video {
+    width: 100%;
+}
+
+.videos-container div {
+    width: 23%;
+    padding-right: 1%;
+    float: left;
+}
+
+.videos-container p {
+    margin: auto;
+    text-align: center;
+}
+
+.break {
+    clear: both;
+}
+
+#js-messages {
+    background-color: grey;
+}
+
+#buttons-container {
+    padding-bottom: 2%;
+}

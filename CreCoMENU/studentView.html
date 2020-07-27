@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="ja">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>CreCoMENU studentView</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Student View</h1>
+    <div id="js-videos-container" class="videos-container">
+        <div>
+            <video id="js-local-video" autoplay muted="true"></video>
+            <p><span id="js-local-id">...</span></p>
+        </div>
+    </div>
+    <div class="controller-container break">
+        <input type="text" placeholder="Join room..." id="js-room-id">
+        <button id="js-join-trigger">Join</button>
+        <button id="js-leave-trigger">Leave</button>
+    </div>
+    <hr>
+    <h2>Log</h2>
+    <pre class="messages" id="js-messages"></pre>
+
+    <script type="text/javascript" src="https://cdn.webrtc.ecl.ntt.com/skyway-latest.js"></script>
+    <script type="text/javascript" src="./key.js"></script>
+    <script type="text/javascript" src="./student.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.webrtc.ecl.ntt.com/skyway-latest.js"></script>
+    <title>CreCoMENU login</title>
+</head>
+
+<body>
+    <h1>Log In</h1>
+    <input id="myPeer">
+    <button onclick="teacherLogin()">teacher</button>
+    <button onclick="studentLogin()">student</button>
+
+    <script>
+        function teacherLogin() {
+            var myPeer = document.getElementById('myPeer').value;
+            window.location = 'teacherView.html?myPeer=' + myPeer;
+        }
+        function studentLogin() {
+            var myPeer = document.getElementById('myPeer').value;
+            window.location = 'studentView.html?myPeer=' + myPeer;
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="ja">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>CreCoMENU teacherView</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Teacher View</h1>
+    <div id="buttons-container">
+        <input type="text" placeholder="Join room..." id="js-room-id">
+        <button id="js-join-trigger">Join</button>
+        <button id="js-leave-trigger">Leave</button>
+    </div>
+
+    <div id="js-videos-container" class="videos-container">
+        <div>
+            <video hidden id="js-local-video" autoplay muted="true"></video>
+            <p hidden><span id="js-local-id">...</span></p>
+        </div>
+    </div>
+    <hr class="break">
+    <div id="logArea">
+        <h2>Log</h2>
+        <pre class="messages" id="js-messages"></pre>
+    </div>
+
+    <script type="text/javascript" src="https://cdn.webrtc.ecl.ntt.com/skyway-latest.js"></script>
+    <script type="text/javascript" src="./key.js"></script>
+    <script type="text/javascript" src="./teacher.js"></script>
+</body>
+
+</html>
